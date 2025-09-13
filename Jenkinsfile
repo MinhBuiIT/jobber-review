@@ -3,6 +3,9 @@ namespace = "production"
 serviceName = "jobber-review"
 service = "Jobber Review"
 
+def groovyMethods
+m1 = System.currentTimeMillis()
+
 pipeline {
   agent {
     label 'Jenkin-Agent'
@@ -29,6 +32,14 @@ pipeline {
 
     stage("Checkout Code") {
       steps {
+        sh "[ -d pipeline ] || mkdir pipeline"
+        dir("pipeline") {
+          git branch: 'main', credentialsId: 'github', url: 'https://github.com/MinhBuiIT/jenkin-automation'
+          script {
+            groovyMethods = load('functions.groovy')
+          }
+        }
+
         git branch: 'main', credentialsId: 'github', url: 'https://github.com/MinhBuiIT/jobber-review'
       }
     }
@@ -98,6 +109,66 @@ EOF
       steps {
         sh 'docker rmi $IMAGE_NAME:$IMAGE_TAG || true'
         sh 'docker rmi $IMAGE_NAME:stable || true'
+      }
+    }
+  }
+  post {
+    success {
+      script {
+        m2 = System.currentTimeMillis()
+        def duration = groovyMethods.durationTime(m1, m2)
+        def author = groovyMethods.readCommitAuthor()
+        groovyMethods.notifySlack("","jobber-log",[
+        				[
+        					title: "BUILD SUCCEEDED: ${service} Service with build number ${env.BUILD_NUMBER}",
+        					title_link: "${env.BUILD_URL}",
+        					color: "good",
+        					text: "Created by: ${author}",
+        					"mrkdwn_in": ["fields"],
+        					fields: [
+        						[
+        							title: "Duration Time",
+        							value: "${durTime}",
+        							short: true
+        						],
+        						[
+        							title: "Stage Name",
+        							value: "Production",
+        							short: true
+        						],
+        					]
+        				]
+        		]
+        )
+      }
+    },
+    failure {
+      script {
+        m2 = System.currentTimeMillis()
+        def duration = groovyMethods.durationTime(m1, m2)
+        def author = groovyMethods.readCommitAuthor()
+        groovyMethods.notifySlack("","jobber-log",[
+        				[
+        					title: "BUILD FAILED: ${service} Service with build number ${env.BUILD_NUMBER}",
+        					title_link: "${env.BUILD_URL}",
+        					color: "error",
+        					text: "Created by: ${author}",
+        					"mrkdwn_in": ["fields"],
+        					fields: [
+        						[
+        							title: "Duration Time",
+        							value: "${durTime}",
+        							short: true
+        						],
+        						[
+        							title: "Stage Name",
+        							value: "Production",
+        							short: true
+        						],
+        					]
+        				]
+        		]
+        )
       }
     }
   }
