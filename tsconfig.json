@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "lib": ["DOM", "ES2015"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "outDir": "build",
+    "rootDir": ".",
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2015",
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true // This is important to make sure that the paths are correctly resolved in the generated declaration files
+      }
+    ],
+    "paths": {
+      "@review/*": ["./src/*"]
+    }
+  },
+  "include": ["./src"],
+  "exclude": ["./node_modules"]
+}
