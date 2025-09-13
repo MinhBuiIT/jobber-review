@@ -73,6 +73,16 @@ EOF
       }
     }
 
+    stage("Setup NPM Config Again") {
+      steps {
+        // ✅ Copy .npmrc để access private packages
+        sh '''
+          echo "Preparing files for Docker build..."
+          cp ~/.npmrc ./
+        '''
+      }
+    }
+
     stage("Build and Push") {
       steps {
         sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW'
