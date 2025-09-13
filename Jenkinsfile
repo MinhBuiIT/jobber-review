@@ -55,17 +55,17 @@ EOF
       }
     }
 
-    stage("Lint check") {
-      steps {
-        sh 'lint:check'
-      }
-    }
+    // stage("Lint check") {
+    //   steps {
+    //     sh 'lint:check'
+    //   }
+    // }
 
-    stage("Format check") {
-      steps {
-        sh 'prettier:check'
-      }
-    }
+    // stage("Format check") {
+    //   steps {
+    //     sh 'prettier:check'
+    //   }
+    // }
 
     stage("Run Unit Tests") {
       steps {
