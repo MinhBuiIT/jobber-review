@@ -4,7 +4,7 @@ serviceName = "jobber-review"
 service = "Jobber Review"
 
 def groovyMethods
-m1 = System.currentTimeMillis()
+def m1 = System.currentTimeMillis()
 
 pipeline {
   agent {
@@ -115,7 +115,7 @@ pipeline {
   post {
     success {
       script {
-        m2 = System.currentTimeMillis()
+        def m2 = System.currentTimeMillis()
         def duration = groovyMethods.durationTime(m1, m2)
         def author = groovyMethods.readCommitAuthor()
         groovyMethods.notifySlack("","jobber-log",[
@@ -128,7 +128,7 @@ pipeline {
         					fields: [
         						[
         							title: "Duration Time",
-        							value: "${durTime}",
+        							value: "${duration}",
         							short: true
         						],
         						[
@@ -144,7 +144,7 @@ pipeline {
     }
     failure {
       script {
-        m2 = System.currentTimeMillis()
+        def m2 = System.currentTimeMillis()
         def duration = groovyMethods.durationTime(m1, m2)
         def author = groovyMethods.readCommitAuthor()
         groovyMethods.notifySlack("","jobber-log",[
@@ -157,7 +157,7 @@ pipeline {
         					fields: [
         						[
         							title: "Duration Time",
-        							value: "${durTime}",
+        							value: "${duration}",
         							short: true
         						],
         						[
