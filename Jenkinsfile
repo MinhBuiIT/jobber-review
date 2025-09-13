@@ -50,10 +50,10 @@ pipeline {
         sh '''
           echo "Creating .npmrc for private GitHub packages..."
           cat > ~/.npmrc << EOF
-@minhbuiit:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${NPM_TOKEN}
-registry=https://registry.npmjs.org/
-EOF
+          @minhbuiit:registry=https://npm.pkg.github.com
+          //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
+          registry=https://registry.npmjs.org/
+          EOF
           echo "NPM config created successfully"
           cat ~/.npmrc
         '''
@@ -141,7 +141,7 @@ EOF
         		]
         )
       }
-    },
+    }
     failure {
       script {
         m2 = System.currentTimeMillis()
