@@ -150,6 +150,5 @@ used queries
 Dockerfile
 dockerignore
 Dockerfile.env
-Jenkinsfile
 .npmrc
 build
