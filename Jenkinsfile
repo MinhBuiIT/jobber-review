@@ -17,6 +17,7 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     IMAGE_NAME = "minhbuidev" + "/" + "jobber-review"
     IMAGE_TAG = "stable:${BUILD_NUMBER}"
+    NPM_TOKEN = credentials('github-npm-token')
   }
 
   stages {
@@ -26,9 +27,30 @@ pipeline {
       }
     }
 
-    stage("Prepare Environment") {
+    stage("Checkout Code") {
       steps {
         git branch: 'main', credentialsId: 'github', url: 'https://github.com/MinhBuiIT/jobber-review'
+      }
+    }
+
+    stage("Setup NPM Config") {
+      steps {
+        // ✅ Copy .npmrc để access private packages
+        sh '''
+          echo "Creating .npmrc for private GitHub packages..."
+          cat > ~/.npmrc << EOF
+@minhbuiit:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NPM_TOKEN}
+registry=https://registry.npmjs.org/
+EOF
+          echo "NPM config created successfully"
+          cat ~/.npmrc
+        '''
+      }
+    }
+
+    stage("Prepare Environment") {
+      steps {
         sh 'npm install'
       }
     }
