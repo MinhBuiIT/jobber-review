@@ -16,7 +16,7 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     IMAGE_NAME = "minhbuidev" + "/" + "jobber-review"
-    IMAGE_TAG = "stable:${BUILD_NUMBER}"
+    IMAGE_TAG = "stable-${BUILD_NUMBER}"
     NPM_TOKEN = credentials('github-npm-token')
   }
 
