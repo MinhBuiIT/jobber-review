@@ -75,12 +75,12 @@ EOF
 
     stage("Build and Push") {
       steps {
-        sh 'sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW'
-        sh 'sudo docker build -t $IMAGE_NAME .'
-        sh 'sudo docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG'
-        sh 'sudo docker tag $IMAGE_NAME $IMAGE_NAME:stable'
-        sh 'sudo docker push $IMAGE_NAME:$IMAGE_TAG'
-        sh 'sudo docker push $IMAGE_NAME:stable'
+        sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR --password $DOCKERHUB_CREDENTIALS_PSW'
+        sh 'docker build -t $IMAGE_NAME .'
+        sh 'docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG'
+        sh 'docker tag $IMAGE_NAME $IMAGE_NAME:stable'
+        sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
+        sh 'docker push $IMAGE_NAME:stable'
       }
     }
 // Bước này sẽ cleanup các image đã build để tránh chiếm dụng dung lượng ổ đĩa của Jenkins server
